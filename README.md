@@ -34,3 +34,6 @@ Events
 Extras:
 - recipe section
 - chat between users and event organizers
+- event rating
+- search by event location sau month
+- event comment 
