@@ -17,7 +17,6 @@ Users
 - location
 - history of events 
 - profile picture
-- roles: guest (can apply to events), admin (can create events and edit them), superadmin (can modify/delete users and events)
 
 Entities: 
 Events
@@ -37,3 +36,5 @@ Extras:
 - event rating
 - search by event location sau month
 - event comment 
+- users have a "last cooked" section on profile where they can upload pictures
+- user roles: Chef (can apply to events), SuperChef (Chef + can create events and edit them), MasterChef ( SuperChef + can modify/delete users and events)
