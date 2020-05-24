@@ -1,11 +1,13 @@
 import React from 'react';
-import AppNavbar from './components/AppNavbar';
+
+// import UserLogin from './modules/User/UserLogin'
+import UserCreate from './modules/User/UserCreate'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-       <AppNavbar/>
+       <UserCreate/>
     </div>
   );
 }
