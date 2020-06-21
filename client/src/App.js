@@ -31,6 +31,7 @@ class App extends React.Component{
           <AppNavbar/>
           
           <p>Saluut!</p>
+          <p> Bine ai venit pe site-ul nostru :)</p>
           
 
           <Grid   
