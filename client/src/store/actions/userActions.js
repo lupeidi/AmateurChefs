@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS, GET_USER, USERS_LOADING, DELETE_USER} from './constants';
+import { GET_USERS, GET_USER, UPDATE_USER, USERS_LOADING, DELETE_USER} from './constants';
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
 import {  
@@ -28,12 +28,25 @@ export const getUser = (id) => dispatch => {
     .get(`/api/users/${id}`)
     .then((res) => 
         dispatch({ 
-            type: GET_USER,
+            type: UPDATE_USER,
             payload: res.data
         }))
     .catch( err => 
         dispatch(returnErrors(err.response.data, err.response.status)))
 };
+
+// export const changeUser = (id) => dispatch => {
+
+//     axios
+//     .put(`/api/users/${id}`)
+//     .then((res) => 
+//         dispatch({ 
+//             type: GET_USER,
+//             payload: res.data
+//         }))
+//     .catch( err => 
+//         dispatch(returnErrors(err.response.data, err.response.status)))
+// };
 
 
 export const deleteUser = (id) => ( dispatch, getState ) => {
@@ -66,7 +79,7 @@ export const updateUser = ({ _id, firstName, lastName, email, password, location
     const body = JSON.stringify({ _id, firstName, lastName, email, password, location, dateofBirth, gender, profilePicture });
     console.log("body", body)
     axios
-        .post(`api/users/update/${_id}`, body, config)
+        .put(`api/users/${_id}`, body, config)
         .then(res =>{
 
             console.log("dispatch")

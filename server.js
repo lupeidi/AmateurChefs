@@ -18,7 +18,9 @@ const app = express();
  mongoose
  .connect(db, {
      useNewUrlParser: true,
-     useCreateIndex: true
+     useCreateIndex: true,
+     useFindAndModify: false,
+     useUnifiedTopology: true
  })
  .then (() => console.log('Connected to MongoDB...'))
  .catch( err => console.log(err));

@@ -49,6 +49,20 @@ router.get('/:id', (req,res) => {
     .catch(err => res.status(404).json({success: false}))
   })
 
+// Update User
+// router.put('/:id', (req,res) => {
+//     User.findByIdAndUpdate(req.params.id, {
+//         $set: req.body
+//     }, (error, data) => {
+//         if (error) {
+//         return next(error);
+
+//         } else {
+//         res.json(data)
+//         console.log('User updated successfully !')
+//         }
+//     })
+//     })
 
 // @route POST api/users
 // @description Create an User
@@ -126,7 +140,7 @@ router.delete('/:id', (req,res) => {
 // @route PUT api/users/:id
 // @description Edit an User
 router.put('/:id', (req,res) => {
-    const body = req.body
+    var body = req.body
 
     if (!body) {
         return res.status(400).json({
@@ -135,30 +149,25 @@ router.put('/:id', (req,res) => {
         })
     }
 
-    User.findOne({ _id: req.params.id }, (err, user) => {
+    if(body.password) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(body.password, salt, (err, hash) => {
+                if(err) throw err;
+                body.password = hash;
+            })
+        })
+    }
+
+    User.findByIdAndUpdate({ _id: req.params.id }, body, (err, user) => {
         if (err) {
             return res.status(404).json({
                 err,
                 message: 'User not found!',
             })
-        }
-        // user.name = body.name
-
-        user
-            .save()
-            .then(() => {
-                return res.status(200).json({
-                    success: true,
-                    id: user._id,
-                    message: 'User updated!',
-                })
-            })
-            .catch(error => {
-                return res.status(404).json({
-                    error,
-                    message: 'User not updated!',
-                })
-            })
+        } else return res.status(200).json({
+            user,
+            message: 'User updated!',
+        })
     })
 });
 
@@ -168,28 +177,6 @@ router.get('/', (req,res) => {
     User.find()
     .sort({ date: -1 })
     .then(users => res.json(users))
-});
-
-// @route POST api/users/update/:id
-// @description Update an User
-router.post('/users/update/:id', (req, res) => {
-    const { firstName, lastName, email, password, location, dateofBirth, gender, profilePicture } = req.body;
-console.log("backend")
-    User.findById(req.params.id)
-    .then( user => {
-        user.firstName = firstName;
-        user.lastName = lastName;
-        user.email = email;
-        user.password = password;
-        user.location = location;
-        user.dateofBirth = dateofBirth;
-        user.gender = gender;
-        user.profilePicture = profilePicture;
-        user.save().then(user => {
-            res.json('User updated!');
-        })
-    })
-    .catch(err => res.status(404).json({success: false})); 
 });
 
 module.exports = router;

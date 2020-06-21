@@ -16,7 +16,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import { getMeetup } from '../../store/actions/meetupActions'
 
 const mapStateToProps = (state) => (
-    console.log("state to prop", state.meetup.selectedMeetup),
     {
     selectedMeetup: state.meetup.selectedMeetup,
     meetup: state.meetup
@@ -31,7 +30,7 @@ class MeetupProfile extends React.Component {
     }
     
     componentWillMount() {
-        console.log("compwillmount")
+        console.log("compwillmount", this.props)
         this.props.getMeetup(this.props.meetupId);
     }
 
@@ -115,4 +114,4 @@ class MeetupProfile extends React.Component {
 
 
 
-export default connect(null, { getMeetup })(MeetupProfile);
+export default connect(mapStateToProps, { getMeetup })(MeetupProfile);
