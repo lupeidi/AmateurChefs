@@ -30,7 +30,7 @@ class App extends React.Component{
 
           <AppNavbar/>
           
-          <p>Welcome</p>
+          <p>Hello!!!</p>
           
 
           <Grid   
