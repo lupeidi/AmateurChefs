@@ -13,36 +13,38 @@ import EventIcon from '@material-ui/icons/Event';
 import PlaceIcon from '@material-ui/icons/Place';
 import PeopleIcon from '@material-ui/icons/People';
 
-import { getMeetup } from '../../store/actions/meetupActions'
+// import { getMeetup } from '../../store/actions/meetupActions'
 
-const mapStateToProps = (state) => (
-    {
-    selectedMeetup: state.meetup.selectedMeetup,
-    meetup: state.meetup
-})
+// const mapStateToProps = (state) => (
+//     {
+//     selectedMeetup: state.meetup.selectedMeetup,
+//     meetup: state.meetup
+// })
 
 class MeetupProfile extends React.Component {
-
-    static propTypes = {
-        getMeetup: PropTypes.func.isRequired,
-        selectedMeetup: PropTypes.object.isRequired,
-        id: PropTypes.string.isRequired,
+    state = {
+        open: this.props.open,
     }
-    
-    componentWillMount() {
-        console.log("compwillmount", this.props)
-        this.props.getMeetup(this.props.meetupId);
+    static propTypes = {
+        // getMeetup: PropTypes.func.isRequired,
+        meetup: PropTypes.object.isRequired,
+        id: PropTypes.string.isRequired,
+        open:  PropTypes.bool.isRequired,
+    }
+
+    toggle = () => {
+        this.setState({open: !this.state.open})
     }
 
     render () {
-        const { selectedMeetup } = this.props;
-        console.log("this.props", this.props)
+        const { meetup, open} = this.props;
 
         return(
 
-            <Dialog>
+
+            <Dialog open={this.state.open}>
                 <img src='https://timis.usr.ro/wp-content/uploads/2017/08/user.png' ></img>
-                <Typography variant="h3" align='center'>{selectedMeetup.name}</Typography>
+                <Typography variant="h3" align='center'>{meetup.name}</Typography>
                 <br></br>
 
                 <Grid   
@@ -60,7 +62,7 @@ class MeetupProfile extends React.Component {
                         alignItems="center"                
                         > 
                             <EventIcon/>
-                            <Typography variant="h5" align='center'>{selectedMeetup.date}</Typography>
+                            <Typography variant="h5" align='center'>{meetup.date}</Typography>
                         </Grid>
                     </Grid>
 
@@ -71,7 +73,7 @@ class MeetupProfile extends React.Component {
                         alignItems="center"                
                         > 
                             <PlaceIcon/>
-                            <Typography variant="h5" align='center'>{selectedMeetup.location}</Typography>
+                            <Typography variant="h5" align='center'>{meetup.location}</Typography>
                         </Grid> 
                     </Grid>
 
@@ -82,36 +84,32 @@ class MeetupProfile extends React.Component {
                         alignItems="center"                
                         >                   
                             <PeopleIcon/>
-                            <Typography variant="h5" align='center'>{selectedMeetup.participantLimit}</Typography>
+                            <Typography variant="h5" align='center'>{meetup.participantLimit}</Typography>
                         </Grid>
                     </Grid>
 
                 </Grid>
 
                 <br/>
-                <Typography variant="h5" align='center'>{selectedMeetup.description}</Typography>
+                <Typography variant="h5" align='center'>{meetup.description}</Typography>
                 <br/>
 
-                <Typography variant="h5" align='center'>{selectedMeetup.requirements}</Typography>
+                <Typography variant="h5" align='center'>{meetup.requirements}</Typography>
                 <br/>
 
                 <br/>
-                <Typography variant="h5" align='center'>{selectedMeetup.participants}</Typography>
+                <Typography variant="h5" align='center'>{meetup.participants}</Typography>
 
                 <DialogActions>
 
                     <Button onClick={this.toggle} color="primary">
-                        x
+                        Close
                     </Button>
 
                 </DialogActions>
 
             </Dialog>
-    )}
+     )}
 }
 
-
-
-
-
-export default connect(mapStateToProps, { getMeetup })(MeetupProfile);
+export default connect(null, null)(MeetupProfile);

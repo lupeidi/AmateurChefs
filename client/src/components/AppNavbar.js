@@ -13,8 +13,8 @@ import RegistrationModal from './auth/RegistrationModal';
 import MeetupCreate from './Meetup/MeetupCreate';
 import LoginModal from './auth/LoginModal';
 import Logout from './auth/Logout';
- import ChangePassword from './auth/ChangePassword';
-
+import ChangePassword from './auth/ChangePassword';
+import UserSelfProfile from './User/UserSelfProfile';
 
 class AppNavbar extends Component {
 
@@ -23,7 +23,7 @@ class AppNavbar extends Component {
 
     const authLinks = (
       <Fragment>
-        <Typography variant="button" >{isAuthenticated? `Welcome ${user.lastName}`: ``}</Typography>
+        {isAuthenticated?  <Typography variant="button" ><UserSelfProfile user={user} /></Typography> : '' } 
         <RestaurantMenuIcon/>
         <MeetupCreate/>
         <RestaurantMenuIcon/>
@@ -42,7 +42,7 @@ class AppNavbar extends Component {
 
     return (
       <div style={{ flexGrow: '1' }} >
-        <AppBar position="static">
+        <AppBar position="static" style={{backgroundColor: '#503A4B'}}>
           <Toolbar>
             <Typography variant="h6" style={{ flexGrow: '1' }}>
               AmateurChefs

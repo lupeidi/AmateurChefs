@@ -26,13 +26,12 @@ const UserSchema = new Schema({
     dateofBirth:{
         type: Date
     },
-    gender:{
-        type: String
-    },
     profilePicture:{ 
-        data: Buffer, 
-        contentType: String 
-    }
+        type: String 
+    },
+    historyOfEvents:{
+        type: Array
+    },
 })
 
 module.exports = User = mongoose.model('user', UserSchema);

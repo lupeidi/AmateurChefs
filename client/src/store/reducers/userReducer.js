@@ -1,4 +1,4 @@
-import { GET_USERS, GET_USER, DELETE_USER, USERS_LOADING, UPDATE_FAIL, UPDATE_SUCCESS } from '../actions/constants';
+import { GET_USERS, GET_USER, UPDATE_USER, DELETE_USER, USERS_LOADING, UPDATE_FAIL, UPDATE_SUCCESS } from '../actions/constants';
 
 const initialState = {
     users: [],
@@ -13,6 +13,7 @@ export default function( state = initialState, action) {
                 users: action.payload,
                 loading: false
             };
+        case UPDATE_USER:
         case GET_USER:
             return {
                 ...state,

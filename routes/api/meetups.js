@@ -5,7 +5,8 @@ const auth = require('../../middleware/auth');
 // Meetup Model
 const Meetup = require('../../models/Meetup');
 
-// Get Single Meetup
+// @route GET api/meetups/:id
+// @description select a Meetup
 router.get('/:id', (req,res) => {
     Meetup.findById(req.params.id)
     .then((selectedMeetup) => res.json(selectedMeetup))
@@ -13,20 +14,56 @@ router.get('/:id', (req,res) => {
   })
   
   
-  // Update Meetup
-  router.put('/:id', (req,res) => {
-    Meetup.findByIdAndUpdate(req.params.id, {
-      $set: req.body
-    }, (error, data) => {
-      if (error) {
-        return next(error);
+// @route PUT api/meetups/:id
+// @description Update an Meetup
+router.put('/:id', (req,res) => {
+  var body = req.body
 
-      } else {
-        res.json(data)
-        console.log('Meetup updated successfully !')
+  if (!body) {
+      return res.status(400).json({
+          success: false,
+          error: 'You must provide data to update',
+      })
+  }
+
+  if(body.participants){
+    Meetup.findById({ _id: body._id })
+    .then((selectedMeetup) => {
+
+      if( selectedMeetup.participantLimit && 
+          selectedMeetup.participants.length == selectedMeetup.participantLimit && 
+          !selectedMeetup.participants.includes(body.participants)) 
+            return res.json({
+              success: false,
+              error: 'Participant limit has been reached!',
+            });
+            console.log("selectedMeetup.participants", selectedMeetup.participants.length)
+      if (selectedMeetup.participants.length && selectedMeetup.participants.includes(body.participants)) {
+        body.participants = selectedMeetup.participants.filter((participant) => participant != body.participants);
+        body.participantsNames = selectedMeetup.participantsNames.filter((participant) => participant != body.participantsNames);
       }
+      else { 
+        body.participants = [...selectedMeetup.participants, body.participants ];
+        body.participantsNames = [...selectedMeetup.participantsNames, body.participantsNames ];
+      }
+      update();
     })
-  })
+  } else update();
+
+  async function update() {
+    await Meetup.findByIdAndUpdate({ _id: req.params.id }, body, (err, user) => {
+      if (err) {
+          return res.status(404).json({
+              err,
+              message: 'User not found!',
+          })
+      } else return res.status(200).json({
+          user,
+          message: 'User updated!',
+      })
+    })
+  }
+});
 
 // @route GET api/meetups
 // @description Get All meetups

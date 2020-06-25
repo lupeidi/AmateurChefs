@@ -23,7 +23,10 @@ const MeetupSchema = new Schema({
         type: Number
     },
     participants:{
-        type: String
+        type: Array,
+    },
+    participantsNames:{
+        type: Array,
     },
     requirements:{
         type: String

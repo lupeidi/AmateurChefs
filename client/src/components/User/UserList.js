@@ -10,10 +10,15 @@ import {
     Avatar, 
     Typography, 
     Button, 
+    Divider,
+    Paper,
+    Dialog,
+    DialogActions
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-
+import PlaceIcon from '@material-ui/icons/Place';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { connect } from 'react-redux';
 import { 
@@ -21,12 +26,10 @@ import {
     deleteUser
 } from '../../store/actions/userActions'
 
-import UserProfile from './UserProfile';
-
 class UserList extends Component {
     state = {
         showProfile: false,
-        userId: '',
+        user: '',
     }
 
     componentWillMount() {
@@ -37,10 +40,13 @@ class UserList extends Component {
         return this.props.deleteUser(id);
     }
 
-    showProfile = (id) => {
-        this.setState({userId: id, showProfile: true})
+    showProfile = (selectedUser) => {
+        this.setState({user: selectedUser, showProfile: true})
     }
 
+    toggle = () => {
+        this.setState({showProfile: !this.state.showProfile})
+    }
 
     render() {
         const secondary = true;
@@ -48,13 +54,14 @@ class UserList extends Component {
         const { users } = this.props.user;
 
         return (
-        <Grid item>
-            <Typography variant="h6" align='center'>
+            <Grid item>
+            <Paper style={{ backgroundColor: 'transparent'}}>
+            <Typography variant="h6" align='center' style={{ letterSpacing: '2px', fontWeight: "bold",}}>
                 Users
             </Typography>
             <div>
             { !this.props.isAuthenticated ? 
-            <Typography variant="caption" align='center' color='secondary'>
+            <Typography  variant="caption" align='center' color='secondary'>
                Login or register to see registered users
             </Typography>
              :  
@@ -62,33 +69,86 @@ class UserList extends Component {
                 {users.map( (user) => {
                     return (
 
-                        <ListItem  key={user._id}>
+                        <div key={user._id}>
+                            <ListItem  >
 
-                        <ListItemAvatar>
-                            <Avatar>
-                            {user.profilePicture?  <img src={user.profilePicture}></img> :  user.firstName[0]}
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={user.firstName}
-                            secondary={secondary ? user.location : 'Secondary text'}
-                        />
+                            <ListItemAvatar>
+                                <Avatar src={user.profilePicture}>
+                                {user.firstName[0]}
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={user.firstName}
+                                secondary={secondary ? user.location : 'Secondary text'}
+                            />
 
-                        <ListItemIcon>
-                            { this.props.isAuthenticated? <Button onClick={() => {this.deleteUser(user._id)}} ><DeleteIcon/></Button> : null }
-                            { this.props.isAuthenticated? <Button onClick={() => {this.showProfile(user._id)}} ><KeyboardArrowRightIcon/></Button> : null }
-                        </ListItemIcon>
-                        
-                        </ListItem>
+                            <ListItemIcon>
+                                { this.props.isAuthenticated? <Button disabled  style={{ backgroundColor: 'transparent'}} onClick={() => {this.showProfile(user)}} ></Button> : null }
+                                { this.props.isAuthenticated? <Button disabled  style={{ backgroundColor: 'transparent'}} onClick={() => {this.showProfile(user)}} ></Button> : null }
+                                { this.props.isAuthenticated? <Button onClick={() => {this.deleteUser(user._id)}} ><DeleteIcon/></Button> : null }
+                                { this.props.isAuthenticated? <Button onClick={() => {this.showProfile(user)}} ><KeyboardArrowRightIcon/></Button> : null }
+                            </ListItemIcon>
+                            
+                            </ListItem>
 
+                            <Divider variant="inset" component="li" />
+                        </div>
                     )
                 })}
 
                 </List>
             }
             </div>
-            {this.state.showProfile? <UserProfile userId={this.state.userId}/> : null}
-        </Grid>
+            </Paper>
+            
+            <Dialog open={this.state.showProfile} maxWidth='sm'>
+
+                <DialogActions>
+
+                    <Button onClick={this.toggle} >
+                        <CloseIcon style={{ color: "#000000" }}/>
+                    </Button>
+
+                </DialogActions>
+
+                <div align='center'>
+                    {this.state.user.profilePicture? <img src={this.state.user.profilePicture} alt={'user profile picture'} width={300} height={300}  ></img> : 
+                    <img src={'https://static.vecteezy.com/system/resources/thumbnails/000/364/628/original/Chef_Avatar_Illustration-03.jpg'} alt={'default user profile picture'} width={300} height={300}  ></img> }
+                </div>
+
+                <Typography variant="h4" align='center'>{this.state.user.firstName}</Typography>
+                <Typography variant="h4" align='center'>{this.state.user.lastName}</Typography>
+                <br></br>
+                <br></br>
+                
+                {this.state.user.location? 
+                    <Grid item> 
+                        <Grid
+                        container direction="row"
+                        justify="center"
+                        alignItems="center"                
+                        > 
+                            <PlaceIcon/>
+                            <Typography variant="h6" align='center'>{this.state.user.location}</Typography>
+                        </Grid> 
+                    </Grid> : null}
+                
+
+
+                <Grid item>
+                    <Typography variant="h6" align='center' >Attended events:</Typography>
+
+                    {this.state.user && this.state.user.historyOfEvents.length? 
+                            this.state.user.historyOfEvents.map( event => <Typography variant="h6" align='center'>{this.state.event.name}</Typography>) : 
+                        <Typography variant="h6" align='center'>No events attended yet :(</Typography> }
+
+                </Grid>
+                <br/>
+
+
+            </Dialog>
+            
+            </Grid>
         );
     };
 }

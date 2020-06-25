@@ -4,11 +4,7 @@ import {
     DialogTitle,
     DialogContent,
     Button,
-    Dialog,
-    TextField,
-    FormControlLabel,
-    RadioGroup,
-    Radio
+    Dialog
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
@@ -180,7 +176,6 @@ class RegistrationModal extends Component {
                                     label="Profile Picture"
                                     onChange={this.handleChange}
                                     name="profilePicture"
-                                    type="file"
                                     value={profilePicture}
                                 />
                                 <br/>

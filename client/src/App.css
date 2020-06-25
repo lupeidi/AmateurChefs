@@ -1,0 +1,16 @@
+  body {
+    display: block;
+    position: relative;
+  }
+  
+  body::after {
+    content: "";
+    background: url(https://thumbs.dreamstime.com/b/coffee-croissant-seamless-pattern-background-vector-food-design-icons-hand-drawing-elements-graphic-texture-restaurant-68088453.jpg);
+    opacity: 0.35;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+  }

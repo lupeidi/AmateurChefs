@@ -35,20 +35,6 @@ export const getUser = (id) => dispatch => {
         dispatch(returnErrors(err.response.data, err.response.status)))
 };
 
-// export const changeUser = (id) => dispatch => {
-
-//     axios
-//     .put(`/api/users/${id}`)
-//     .then((res) => 
-//         dispatch({ 
-//             type: GET_USER,
-//             payload: res.data
-//         }))
-//     .catch( err => 
-//         dispatch(returnErrors(err.response.data, err.response.status)))
-// };
-
-
 export const deleteUser = (id) => ( dispatch, getState ) => {
     axios
     .delete(`api/users/${id}`, tokenConfig(getState))
@@ -68,7 +54,7 @@ export const setUsersLoading = () => {
 };
 
 export const updateUser = ({ _id, firstName, lastName, email, password, location, dateofBirth, gender, profilePicture }) => ( dispatch ) => {
-    console.log("Actions")
+
     const config = {
     headers: {
     'Content-Type': 'application/json'
@@ -77,12 +63,10 @@ export const updateUser = ({ _id, firstName, lastName, email, password, location
 
     // Request body
     const body = JSON.stringify({ _id, firstName, lastName, email, password, location, dateofBirth, gender, profilePicture });
-    console.log("body", body)
+
     axios
         .put(`api/users/${_id}`, body, config)
         .then(res =>{
-
-            console.log("dispatch")
             dispatch({
                 type: UPDATE_SUCCESS,
                 payload: res.data
@@ -90,7 +74,6 @@ export const updateUser = ({ _id, firstName, lastName, email, password, location
         }
         )
         .catch(err => {
-            console.log("dispatcherr")
             dispatch(
                 returnErrors(err.response.data, err.response.status, 'UPDATE_FAIL')
             );
@@ -99,3 +82,31 @@ export const updateUser = ({ _id, firstName, lastName, email, password, location
             });
         });
 }
+
+// export const userAttendMeetup = ( _id, historyOfEvents, eventsNames ) => ( dispatch, getState ) => {
+
+//     // Request body
+//     const body = JSON.stringify({ _id, historyOfEvents, eventsNames });
+//     console.log("body", body)
+//     axios
+//         .put(`api/users/${_id}`, body, tokenConfig(getState))
+//         .then(res => { 
+//             dispatch(setUsersLoading());
+//             axios
+//             .get('/api/users')
+//             .then((res) => 
+//                 dispatch({ 
+//                     type: GET_USERS,
+//                     payload: res.data
+//                 }))
+
+//         })
+//         .catch(err => {
+//             dispatch(
+//                 returnErrors(err.response.data, err.response.status, 'UPDATE_FAIL')
+//             );
+//             dispatch({
+//                 type: UPDATE_FAIL
+//             });
+//         });
+// }

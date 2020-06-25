@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
     DialogActions,
     DialogTitle,
@@ -6,12 +8,10 @@ import {
     Button,
     Dialog,
 } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { 
     updateUser, 
 } from '../../store/actions/userActions'
-import PropTypes from 'prop-types';
 
 export class ChangePassword extends React.Component {
     state = {
@@ -49,9 +49,7 @@ export class ChangePassword extends React.Component {
     handleSubmit = () => {
         const { password } = this.state.formData;
         const { user } = this.props;
-        console.log("user", user)
         user.password = password;
-        console.log("user.password", user)
         this.setState({ submitted: true });
         this.props.updateUser(user);
     }

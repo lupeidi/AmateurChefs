@@ -14,6 +14,7 @@ export default function( state = initialState, action) {
                 meetups: action.payload,
                 loading: false
             };
+        case UPDATE_MEETUP:
         case GET_MEETUP:
             return {
                 ...state,
@@ -25,11 +26,6 @@ export default function( state = initialState, action) {
                 ...state,
                 meetups: [action.payload, ...state.meetups]
             };
-        case UPDATE_MEETUP:
-            return {
-                ...state,
-                // meetups: [action.payload, ...state.meetups]
-                };
         case DELETE_MEETUP:
             return {
                 ...state,

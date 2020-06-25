@@ -3,33 +3,6 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//       cb(null, './uploads/');
-//     },
-//     filename: function(req, file, cb) {
-//       cb(null, new Date().toISOString() + file.originalname);
-//     }
-//   });
-  
-//   const fileFilter = (req, file, cb) => {
-//     // reject a file
-//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-//       cb(null, true);
-//     } else {
-//       cb(null, false);
-//     }
-//   };
-  
-//   const upload = multer({
-//     storage: storage,
-//     limits: {
-//       fileSize: 1024 * 1024 * 5
-//     },
-//     fileFilter: fileFilter
-//   });
 
 // User Model
 const User = require('../../models/User');
@@ -42,27 +15,13 @@ router.get('/', (req,res) => {
     .then(users => res.json(users))
 });
 
-// Get Single User
+// @route GET api/users
+// @description Get One User
 router.get('/:id', (req,res) => {
     User.findById(req.params.id)
     .then((selectedUser) => res.json(selectedUser))
     .catch(err => res.status(404).json({success: false}))
   })
-
-// Update User
-// router.put('/:id', (req,res) => {
-//     User.findByIdAndUpdate(req.params.id, {
-//         $set: req.body
-//     }, (error, data) => {
-//         if (error) {
-//         return next(error);
-
-//         } else {
-//         res.json(data)
-//         console.log('User updated successfully !')
-//         }
-//     })
-//     })
 
 // @route POST api/users
 // @description Create an User
@@ -138,10 +97,10 @@ router.delete('/:id', (req,res) => {
 });
 
 // @route PUT api/users/:id
-// @description Edit an User
+// @description Update an User
 router.put('/:id', (req,res) => {
     var body = req.body
-
+console.log("userbody", body)
     if (!body) {
         return res.status(400).json({
             success: false,
@@ -149,26 +108,46 @@ router.put('/:id', (req,res) => {
         })
     }
 
+    // if(body.historyOfEvents)     
+    //     User.findById({ _id: body._id })
+    //     .then((selectedUser) => {
+    //         if (selectedUser.historyOfEvents.length && selectedUser.historyOfEvents.includes(body.historyOfEvents)) {
+    //             console.log("if");
+    //             body.historyOfEvents = selectedUser.historyOfEvents.filter((participant) => participant != body.historyOfEvents);
+    //             body.eventsNames = selectedUser.eventsNames.filter((participant) => participant != body.eventsNames);
+    //         }
+    //         else { 
+    //             console.log("else");
+    //             body.historyOfEvents = [...selectedUser.historyOfEvents, body.historyOfEvents ];
+    //             body.eventsNames = [...selectedUser.eventsNames, body.eventsNames ];
+    //         }
+    //         update();
+    //         })
+
     if(body.password) {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(body.password, salt, (err, hash) => {
                 if(err) throw err;
                 body.password = hash;
+                update();
+            })
+        })
+    } else update();
+    
+    async function update(){
+console.log("update")
+        await User.findByIdAndUpdate({ _id: req.params.id }, body, (err, user) => {
+            if (err) {
+                return res.status(404).json({
+                    err,
+                    message: 'User not found!',
+                })
+            } else return res.status(200).json({
+                user,
+                message: 'User updated!',
             })
         })
     }
-
-    User.findByIdAndUpdate({ _id: req.params.id }, body, (err, user) => {
-        if (err) {
-            return res.status(404).json({
-                err,
-                message: 'User not found!',
-            })
-        } else return res.status(200).json({
-            user,
-            message: 'User updated!',
-        })
-    })
 });
 
 // @route GET api/users
