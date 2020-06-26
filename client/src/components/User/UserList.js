@@ -115,12 +115,10 @@ class UserList extends Component {
                     {this.state.user.profilePicture? <img src={this.state.user.profilePicture} alt={'user profile picture'} width={300} height={300}  ></img> : 
                     <img src={'https://static.vecteezy.com/system/resources/thumbnails/000/364/628/original/Chef_Avatar_Illustration-03.jpg'} alt={'default user profile picture'} width={300} height={300}  ></img> }
                 </div>
-
+                <br/>
                 <Typography variant="h4" align='center'>{this.state.user.firstName}</Typography>
                 <Typography variant="h4" align='center'>{this.state.user.lastName}</Typography>
-                <br></br>
-                <br></br>
-                
+                <br/>
                 {this.state.user.location? 
                     <Grid item> 
                         <Grid
@@ -131,9 +129,9 @@ class UserList extends Component {
                             <PlaceIcon/>
                             <Typography variant="h6" align='center'>{this.state.user.location}</Typography>
                         </Grid> 
+                        <br/>
                     </Grid> : null}
                 
-
 
                 <Grid item>
                     <Typography variant="h6" align='center' >Attended events:</Typography>
@@ -145,7 +143,6 @@ class UserList extends Component {
                 </Grid>
                 <br/>
 
-
             </Dialog>
             
             </Grid>
@@ -154,6 +151,7 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
+    getMeetups: PropTypes.func.isRequired,
     getUsers: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired
 }

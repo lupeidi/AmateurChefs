@@ -52,7 +52,7 @@ class MeetupList extends Component {
         return this.props.deleteMeetup(id);
     }
 
-    handleAttendMeetup = (meetupId, userId, userName) => {
+    handleAttend = (meetupId, userId, userName) => {
         return this.props.attendMeetup(meetupId, userId, userName);
     }
 
