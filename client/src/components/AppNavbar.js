@@ -1,11 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { 
     AppBar, 
     Toolbar,
     Typography,
-    IconButton, 
 } from '@material-ui/core';
 import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
 

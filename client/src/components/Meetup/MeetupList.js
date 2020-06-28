@@ -36,6 +36,7 @@ import {
 
 import { 
     getUsers,
+    userAttendMeetup
 } from '../../store/actions/userActions';
 
 class MeetupList extends Component {
@@ -53,7 +54,13 @@ class MeetupList extends Component {
     }
 
     handleAttend = (meetupId, userId, userName) => {
+        // this.userAttendMeetup(userId, meetupId);
         return this.props.attendMeetup(meetupId, userId, userName);
+    }
+
+    userAttendMeetup = (userId, meetupId) => {
+        console.log("userId", userId)
+        return this.props.userAttendMeetup(userId, meetupId);
     }
 
     toggle = () => {
@@ -62,16 +69,13 @@ class MeetupList extends Component {
 
     showProfile = (selectedMeetup) => {
         this.setState({meetup: selectedMeetup, showProfile: true})
-        console.log(this.state)
     }
 
 
     render() {
         const secondary = true;
-        const { isAuthenticated, user }  = this.props;
         const { meetups } = this.props.meetup;
-        const { users } = this.props.user;
-        console.log("meetups", this.state.meetup)
+        
         return (
         <Grid item >
 
@@ -95,7 +99,7 @@ class MeetupList extends Component {
 
                                 <ListItemAvatar>
                                     <Avatar>
-                                    <img src={meetup.coverPicture}></img>
+                                    <img src={meetup.coverPicture || 'https://www.stjohnsliving.org/wp-content/uploads/2019/06/Cooking-Club-01.png'} alt='cover'></img>
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
@@ -108,7 +112,7 @@ class MeetupList extends Component {
                                      {/* <Button onClick={() => {this.editMeetup(meetup)}} ><EditIcon/></Button>  */}
                                     { this.props.isAuthenticated? <Button onClick={() => {this.deleteMeetup(meetup._id)}} ><DeleteIcon/></Button> : null }
                                     { this.props.isAuthenticated? 
-                                    <Button disabled={meetup.participants.length == meetup.participantLimit && !meetup.participants.includes(this.props.curentUser._id)}
+                                    <Button disabled={meetup.participants.length === meetup.participantLimit && !meetup.participants.includes(this.props.curentUser._id)}
                                     onClick={() => {this.handleAttend( meetup._id, this.props.curentUser._id, this.props.curentUser.firstName, meetup.name)}} >
                                         {!meetup.participants.includes(this.props.curentUser._id) ?
                                         <PersonAddIcon/> : <PersonAddDisabledIcon/>}
@@ -138,8 +142,8 @@ class MeetupList extends Component {
                 </DialogActions>
 
                 <div align='center'>
-                    {this.state.meetup.coverPicture? <img src={this.state.meetup.coverPicture} alt={'meetup profile picture'} width={300} height={300}  ></img> : 
-                    <img src={'https://www.stjohnsliving.org/wp-content/uploads/2019/06/Cooking-Club-01.png'} alt={'default user profile picture'} width={300} height={300}  ></img> }
+                    {this.state.meetup.coverPicture? <img src={this.state.meetup.coverPicture} alt={'meetup profile'} width={300} height={300}  ></img> : 
+                    <img src={'https://www.stjohnsliving.org/wp-content/uploads/2019/06/Cooking-Club-01.png'} alt={'default user profile'} width={300} height={300}  ></img> }
                 </div>
             
                 <Typography variant="h3" align='center'>{this.state.meetup.name}</Typography>
@@ -231,7 +235,7 @@ MeetupList.propTypes = {
     getUsers: PropTypes.func.isRequired,
     meetup: PropTypes.object.isRequired,
     attendMeetup: PropTypes.func.isRequired,
-    // userAttendMeetup: PropTypes.func.isRequired,
+    userAttendMeetup: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -242,5 +246,5 @@ const mapStateToProps = (state) => ({
     selectedMeetup: state.meetup.selectedMeetup
 })
 
-export default connect(mapStateToProps, { getMeetups, getUsers, getMeetup, deleteMeetup, attendMeetup })(MeetupList);
+export default connect(mapStateToProps, { getMeetups, getUsers, getMeetup, deleteMeetup, attendMeetup, userAttendMeetup })(MeetupList);
 

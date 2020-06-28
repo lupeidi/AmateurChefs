@@ -14,9 +14,6 @@ import store from './store';
 import { loadUser } from './store/actions/authActions';
 
 
-import MeetupProfile from './components/Meetup/MeetupProfile';
-
-
 class App extends React.Component{
 
   componentDidMount(){

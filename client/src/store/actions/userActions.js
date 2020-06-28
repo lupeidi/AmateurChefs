@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS, GET_USER, UPDATE_USER, USERS_LOADING, DELETE_USER} from './constants';
+import { GET_USERS, UPDATE_USER, USERS_LOADING, DELETE_USER} from './constants';
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
 import {  
@@ -83,30 +83,29 @@ export const updateUser = ({ _id, firstName, lastName, email, password, location
         });
 }
 
-// export const userAttendMeetup = ( _id, historyOfEvents, eventsNames ) => ( dispatch, getState ) => {
+export const userAttendMeetup = ( _id, historyOfEvents ) => ( dispatch, getState ) => {
 
-//     // Request body
-//     const body = JSON.stringify({ _id, historyOfEvents, eventsNames });
-//     console.log("body", body)
-//     axios
-//         .put(`api/users/${_id}`, body, tokenConfig(getState))
-//         .then(res => { 
-//             dispatch(setUsersLoading());
-//             axios
-//             .get('/api/users')
-//             .then((res) => 
-//                 dispatch({ 
-//                     type: GET_USERS,
-//                     payload: res.data
-//                 }))
-
-//         })
-//         .catch(err => {
-//             dispatch(
-//                 returnErrors(err.response.data, err.response.status, 'UPDATE_FAIL')
-//             );
-//             dispatch({
-//                 type: UPDATE_FAIL
-//             });
-//         });
-// }
+    // Request body
+    const body = JSON.stringify({ _id, historyOfEvents });
+    console.log("body", body)
+    axios
+        .put(`api/users/${_id}`, body, tokenConfig(getState))
+        .then(res => { 
+            dispatch(setUsersLoading());
+            axios
+            .get('/api/users')
+            .then((res) => 
+                dispatch({ 
+                    type: GET_USERS,
+                    payload: res.data
+                }))
+        })
+        .catch(err => {
+            dispatch(
+                returnErrors(err.response.data, err.response.status, 'UPDATE_FAIL')
+            );
+            dispatch({
+                type: UPDATE_FAIL
+            });
+        });
+}

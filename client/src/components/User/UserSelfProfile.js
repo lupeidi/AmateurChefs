@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { 
     Typography, 
     Dialog, 
@@ -8,11 +7,10 @@ import {
     Button,
     Grid,
 } from '@material-ui/core';
-import EventIcon from '@material-ui/icons/Event';
 import PlaceIcon from '@material-ui/icons/Place';
-import PeopleIcon from '@material-ui/icons/People';
+import CloseIcon from '@material-ui/icons/Close';
 
-class UserSelfProfile extends React.Component {
+class UserSelfProfile extends Component {
     state = {
         modal: false,
     }
@@ -26,29 +24,32 @@ class UserSelfProfile extends React.Component {
     }
     render () {
         const { user } = this.props;
+        console.log("user", user)
 
         return(
             <div>
             <Typography onClick={this.toggle} variant="button" >Welcome {user.firstName}</Typography>
 
+ 
             <Dialog open={this.state.modal} maxWidth='sm'>
+
+                <DialogActions>
+
+                    <Button onClick={this.toggle} >
+                        <CloseIcon style={{ color: "#000000" }}/>
+                    </Button>
+
+                </DialogActions>
+
                 <div align='center'>
-                    <img src={user.profilePicture} alt={'user profile picture'} width={300} height={300}  ></img>
+                    {user.profilePicture? <img src={user.profilePicture} alt={'user profile'} width={300} height={300}  ></img> : 
+                    <img src={'https://static.vecteezy.com/system/resources/thumbnails/000/364/628/original/Chef_Avatar_Illustration-03.jpg'} alt={'default user profile'} width={300} height={300}  ></img> }
                 </div>
+                <br/>
                 <Typography variant="h4" align='center'>{user.firstName}</Typography>
                 <Typography variant="h4" align='center'>{user.lastName}</Typography>
-                <br></br>
-                <br></br>
-
-                <Grid   
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                    spacing={4}
-
-                >
-
+                <br/>
+                {user.location? 
                     <Grid item> 
                         <Grid
                         container direction="row"
@@ -58,36 +59,11 @@ class UserSelfProfile extends React.Component {
                             <PlaceIcon/>
                             <Typography variant="h6" align='center'>{user.location}</Typography>
                         </Grid> 
-                    </Grid>
+                        <br/>
+                    </Grid> : null}
+                
 
-                </Grid>
-
-                <br/>
-                    <Grid 
-                    container
-                    justify="center"
-                    alignItems="center"
-                    > 
-
-                    <Typography variant="h6" >Attended events:</Typography>
-                    <br></br>
-                    <br></br>
-
-                    {!user.historyOfEvents? 
-                        <Typography variant="h6">No events attended yet :(</Typography> : 
-                        user.historyOfEvents.map( event => <Typography variant="h6">{event.name}</Typography>)}
-
-                    </Grid>
-
-                <DialogActions>
-
-                    <Button onClick={this.toggle} color="primary">
-                        Close
-                    </Button>
-
-                </DialogActions>
-
-            </Dialog>
+                </Dialog>          
           
             </div>
     )}

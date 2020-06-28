@@ -44,8 +44,6 @@ router.post('/', (req,res) => {
                 email, 
                 password,
                 location, 
-                dateofBirth, 
-                gender, 
                 profilePicture
             })
 
@@ -71,8 +69,6 @@ router.post('/', (req,res) => {
                                         email: user.email, 
                                         password: user.password,
                                         location: user.location, 
-                                        dateofBirth: user.dateofBirth, 
-                                        gender: user.gender, 
                                         profilePicture: user.profilePicture,
                                     }
                                 })
@@ -108,21 +104,22 @@ console.log("userbody", body)
         })
     }
 
-    // if(body.historyOfEvents)     
-    //     User.findById({ _id: body._id })
-    //     .then((selectedUser) => {
-    //         if (selectedUser.historyOfEvents.length && selectedUser.historyOfEvents.includes(body.historyOfEvents)) {
-    //             console.log("if");
-    //             body.historyOfEvents = selectedUser.historyOfEvents.filter((participant) => participant != body.historyOfEvents);
-    //             body.eventsNames = selectedUser.eventsNames.filter((participant) => participant != body.eventsNames);
-    //         }
-    //         else { 
-    //             console.log("else");
-    //             body.historyOfEvents = [...selectedUser.historyOfEvents, body.historyOfEvents ];
-    //             body.eventsNames = [...selectedUser.eventsNames, body.eventsNames ];
-    //         }
-    //         update();
-    //         })
+    if(body.historyOfEvents)     
+        {console.log("history");
+        User.findById({ _id: body._id })
+        .then((selectedUser) => {
+            if (selectedUser.historyOfEvents.length && selectedUser.historyOfEvents.includes(body.historyOfEvents)) {
+                console.log("if");
+                body.historyOfEvents = selectedUser.historyOfEvents.filter((participant) => participant != body.historyOfEvents);
+                // body.eventsNames = selectedUser.eventsNames.filter((participant) => participant != body.eventsNames);
+            }
+            else { 
+                console.log("else");
+                body.historyOfEvents = [...selectedUser.historyOfEvents, body.historyOfEvents ];
+                // body.eventsNames = [...selectedUser.eventsNames, body.eventsNames ];
+            }
+            update();
+        })};
 
     if(body.password) {
         bcrypt.genSalt(10, (err, salt) => {
@@ -135,7 +132,7 @@ console.log("userbody", body)
     } else update();
     
     async function update(){
-console.log("update")
+    console.log("update")   
         await User.findByIdAndUpdate({ _id: req.params.id }, body, (err, user) => {
             if (err) {
                 return res.status(404).json({

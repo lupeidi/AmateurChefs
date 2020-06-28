@@ -50,7 +50,6 @@ class UserList extends Component {
 
     render() {
         const secondary = true;
-        const { isAuthenticated } = this.props;
         const { users } = this.props.user;
 
         return (
@@ -112,8 +111,8 @@ class UserList extends Component {
                 </DialogActions>
 
                 <div align='center'>
-                    {this.state.user.profilePicture? <img src={this.state.user.profilePicture} alt={'user profile picture'} width={300} height={300}  ></img> : 
-                    <img src={'https://static.vecteezy.com/system/resources/thumbnails/000/364/628/original/Chef_Avatar_Illustration-03.jpg'} alt={'default user profile picture'} width={300} height={300}  ></img> }
+                    {this.state.user.profilePicture? <img src={this.state.user.profilePicture} alt={'user profile'} width={300} height={300}  ></img> : 
+                    <img src={'https://static.vecteezy.com/system/resources/thumbnails/000/364/628/original/Chef_Avatar_Illustration-03.jpg'} alt={'default user profile'} width={300} height={300}  ></img> }
                 </div>
                 <br/>
                 <Typography variant="h4" align='center'>{this.state.user.firstName}</Typography>
@@ -132,15 +131,15 @@ class UserList extends Component {
                         <br/>
                     </Grid> : null}
                 
-
+{/* 
                 <Grid item>
-                    <Typography variant="h6" align='center' >Attended events:</Typography>
+                    <Typography variant="h6" align='center' >Attended events:</Typography> */}
 
-                    {this.state.user && this.state.user.historyOfEvents.length? 
-                            this.state.user.historyOfEvents.map( event => <Typography variant="h6" align='center'>{this.state.event.name}</Typography>) : 
-                        <Typography variant="h6" align='center'>No events attended yet :(</Typography> }
+                    {/* {this.state.user && this.state.user.historyOfEvents.length? 
+                            this.state.user.historyOfEvents.map( event => <Typography variant="h6" align='center'>{event}</Typography>) : 
+                        <Typography variant="h6" align='center'>No events attended yet :(</Typography> } */}
 
-                </Grid>
+                {/* </Grid> */}
                 <br/>
 
             </Dialog>

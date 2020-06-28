@@ -23,13 +23,13 @@ const UserSchema = new Schema({
     location:{
         type: String
     },
-    dateofBirth:{
-        type: Date
-    },
     profilePicture:{ 
         type: String 
     },
     historyOfEvents:{
+        type: Array
+    },
+    eventsNames:{
         type: Array
     },
 })
