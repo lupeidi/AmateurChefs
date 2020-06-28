@@ -54,13 +54,7 @@ class MeetupList extends Component {
     }
 
     handleAttend = (meetupId, userId, userName) => {
-        // this.userAttendMeetup(userId, meetupId);
         return this.props.attendMeetup(meetupId, userId, userName);
-    }
-
-    userAttendMeetup = (userId, meetupId) => {
-        console.log("userId", userId)
-        return this.props.userAttendMeetup(userId, meetupId);
     }
 
     toggle = () => {
@@ -112,7 +106,7 @@ class MeetupList extends Component {
                                      {/* <Button onClick={() => {this.editMeetup(meetup)}} ><EditIcon/></Button>  */}
                                     { this.props.isAuthenticated? <Button onClick={() => {this.deleteMeetup(meetup._id)}} ><DeleteIcon/></Button> : null }
                                     { this.props.isAuthenticated? 
-                                    <Button disabled={meetup.participants.length === meetup.participantLimit && !meetup.participants.includes(this.props.curentUser._id)}
+                                    <Button disabled={meetup.participants.length == meetup.participantLimit && !meetup.participants.includes(this.props.curentUser._id)}
                                     onClick={() => {this.handleAttend( meetup._id, this.props.curentUser._id, this.props.curentUser.firstName, meetup.name)}} >
                                         {!meetup.participants.includes(this.props.curentUser._id) ?
                                         <PersonAddIcon/> : <PersonAddDisabledIcon/>}
